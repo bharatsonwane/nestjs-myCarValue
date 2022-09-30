@@ -3,19 +3,19 @@ import { IsEmail, IsString } from 'class-validator'
 
 export class CreateUserDto {
 
-    // @ApiProperty({
-    //     // description: 'User Email',
-    //     example: 'test@gmail.com',
-    // })
-    @IsEmail()
-    email: string;
+  // @ApiProperty({
+  //     // description: 'User Email',
+  //     example: 'test@gmail.com',
+  // })
+  @IsEmail()
+  email: string;
 
-    // @ApiProperty({
-    //     // description: 'User Email',
-    //     example: 'password',
-    // })
-    @IsString()
-    password: string
+  // @ApiProperty({
+  //     // description: 'User Email',
+  //     example: 'password',
+  // })
+  @IsString()
+  password: string;
 
 
 }

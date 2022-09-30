@@ -3,30 +3,30 @@ import { AfterInsert, AfterRemove, AfterUpdate, Entity, Column, PrimaryGenerated
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    email: string;
+  @Column()
+  email: string;
 
-    @Column()
-    password: string;
+  @Column()
+  password: string;
 
-    @AfterInsert()
-    logInsert() {
-        // console.log("Inserted User with id", this.id)
-    }
+  @AfterInsert()
+  logInsert() {
+    // console.log("Inserted User with id", this.id)
+  }
 
-    @AfterUpdate()
-    logUpdate() {
-        // console.log("Updated User with id", this.id)
-    }
+  @AfterUpdate()
+  logUpdate() {
+    // console.log("Updated User with id", this.id)
+  }
 
-    @AfterRemove()
-    logRemove() {
-        // console.log("Removed User with id", this.id)
-    }
+  @AfterRemove()
+  logRemove() {
+    // console.log("Removed User with id", this.id)
+  }
 
-    // @Column()
-    // username: string
+  // @Column()
+  // username: string
 }
