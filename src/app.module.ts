@@ -1,6 +1,8 @@
 import { Module, ValidationPipe, MiddlewareConsumer } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core'
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config'
+
 import { AppController } from './app/app.controller';
 import { AppService } from './app/app.service';
 import { UsersModule } from './users/users.module';
@@ -12,12 +14,27 @@ const cookieSession = require('cookie-session');
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: process.env.NODE_ENV === 'test' ? 'test.sqlite': 'db.sqlite',
-      entities: [User, Report],
-      synchronize: true, /** only for development */
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          type: 'sqlite',
+          database: config.get<string>('DB_NAME'),
+          synchronize: true,
+          entities: [User, Report],
+        }
+      }
+    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'sqlite',
+    //   database: process.env.NODE_ENV === 'test' ? 'test.sqlite' : 'db.sqlite',
+    //   entities: [User, Report],
+    //   synchronize: true, /** only for development */
+    // }),
     UsersModule,
     ReportsModule,
   ],
