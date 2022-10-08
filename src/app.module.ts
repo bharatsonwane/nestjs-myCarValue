@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe, MiddlewareConsumer } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app/app.controller';
 import { AppService } from './app/app.service';
@@ -7,6 +8,7 @@ import { ReportsModule } from './reports/reports.module';
 
 import { User } from './users/user.entity';
 import { Report } from './reports/report.entity';
+const cookieSession = require('cookie-session');
 
 @Module({
   imports: [
@@ -20,6 +22,24 @@ import { Report } from './reports/report.entity';
     ReportsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      /** @global_pipe for validation */
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true
+      })
+    }
+  ],
 })
-export class AppModule {}
+export class AppModule {
+  /** @global_middleware */
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(
+      cookieSession({
+        keys: ['asdfasfd']
+      })
+    ).forRoutes('*')
+  }
+}
